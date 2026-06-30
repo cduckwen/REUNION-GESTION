@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reunión de Ventas — Berger S.A. · Junio 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --rojo:#C8102E; --rojo-dark:#9B0C22; --azul:#1E2D40; --azul-mid:#2C3E50;
+    --gris-bg:#F4F5F7; --gris-borde:#E2E5EA; --verde:#16A34A; --naranja:#D97706;
+    --blanco:#FFFFFF; --texto:#1A1D23; --texto-suave:#5A6272; --mono:'DM Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',sans-serif;background:var(--gris-bg);color:var(--texto);font-size:14px;line-height:1.5;}
+  .header{background:var(--azul);color:white;padding:28px 40px 24px;display:flex;justify-content:space-between;align-items:flex-end;border-bottom:4px solid var(--rojo);}
+  .header-marca{font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:6px;}
+  .header-titulo{font-size:26px;font-weight:800;line-height:1.1;}
+  .header-titulo span{color:var(--rojo);}
+  .header-meta{text-align:right;}
+  .header-periodo{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.5);margin-bottom:4px;}
+  .header-badge{display:inline-block;background:var(--rojo);color:white;font-size:11px;font-weight:700;letter-spacing:.08em;padding:4px 10px;border-radius:3px;}
+  .nav{background:white;border-bottom:1px solid var(--gris-borde);padding:0 40px;display:flex;gap:0;overflow-x:auto;position:sticky;top:0;z-index:100;}
+  .nav-item{padding:14px 18px;font-size:12px;font-weight:600;color:var(--texto-suave);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .15s;text-decoration:none;}
+  .nav-item:hover{color:var(--rojo);}
+  .nav-item.active{color:var(--rojo);border-bottom-color:var(--rojo);}
+  .container{max-width:1280px;margin:0 auto;padding:32px 40px;}
+  .seccion{margin-bottom:48px;}
+  .seccion-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--gris-borde);}
+  .seccion-numero{background:var(--rojo);color:white;font-family:var(--mono);font-size:11px;font-weight:500;width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .seccion-titulo{font-size:17px;font-weight:700;color:var(--azul);}
+  .seccion-sub{font-size:12px;color:var(--texto-suave);font-weight:400;margin-left:4px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+  .kpi-card{background:white;border:1px solid var(--gris-borde);border-radius:8px;padding:20px 22px;position:relative;overflow:hidden;}
+  .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--azul-mid);}
+  .kpi-card.rojo::before{background:var(--rojo);}
+  .kpi-card.verde::before{background:var(--verde);}
+  .kpi-card.naranja::before{background:var(--naranja);}
+  .kpi-label{font-size:11px;font-weight:600;color:var(--texto-suave);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+  .kpi-valor{font-family:var(--mono);font-size:26px;font-weight:500;color:var(--azul);line-height:1;}
+  .kpi-sub{font-size:11px;color:var(--texto-suave);margin-top:6px;}
+  .kpi-var{font-family:var(--mono);font-size:13px;font-weight:500;margin-top:6px;}
+  .kpi-var.neg{color:var(--rojo);}
+  .kpi-var.pos{color:var(--verde);}
+  .kpi-var.warn{color:var(--naranja);}
+  .tabla-wrap{background:white;border:1px solid var(--gris-borde);border-radius:8px;overflow:hidden;}
+  table{width:100%;border-collapse:collapse;}
+  th{background:var(--rojo);color:white;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:10px 14px;text-align:left;white-space:nowrap;}
+  th.num{text-align:right;}
+  td{padding:9px 14px;font-size:13px;border-bottom:1px solid var(--gris-borde);vertical-align:middle;}
+  td.num{text-align:right;font-family:var(--mono);font-size:12px;}
+  tr:last-child td{border-bottom:none;}
+  tr:nth-child(even) td{background:#FAFBFC;}
+  tr.total td{background:var(--azul)!important;color:white;font-weight:700;font-family:var(--mono);font-size:12px;}
+  tr.total td.label{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;}
+  .avance-wrap{display:flex;align-items:center;gap:8px;}
+  .avance-bar-bg{flex:1;background:#E5E7EB;border-radius:3px;height:6px;overflow:hidden;min-width:60px;}
+  .avance-bar{height:100%;border-radius:3px;background:var(--verde);}
+  .avance-bar.warn{background:var(--naranja);}
+  .avance-bar.danger{background:var(--rojo);}
+  .avance-pct{font-family:var(--mono);font-size:11px;font-weight:500;min-width:38px;text-align:right;}
+  .pos{color:var(--verde);font-weight:600;font-family:var(--mono);font-size:12px;}
+  .neg{color:var(--rojo);font-weight:600;font-family:var(--mono);font-size:12px;}
+  .warn{color:var(--naranja);font-weight:600;font-family:var(--mono);font-size:12px;}
+  .nuevo-badge{background:#DCFCE7;color:#16A34A;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:.04em;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .stock-card{background:white;border:1px solid var(--gris-borde);border-radius:8px;padding:18px 20px;}
+  .stock-familia{font-size:13px;font-weight:700;color:var(--azul);margin-bottom:4px;}
+  .stock-u{font-family:var(--mono);font-size:28px;font-weight:500;color:var(--rojo);line-height:1;}
+  .stock-u-label{font-size:11px;color:var(--texto-suave);}
+  .stock-valor{font-family:var(--mono);font-size:13px;color:var(--texto-suave);margin-top:6px;}
+  .alerta{background:#FEF3C7;border-left:4px solid var(--naranja);border-radius:0 6px 6px 0;padding:12px 16px;font-size:13px;color:#78350F;margin-top:16px;}
+  .alerta strong{color:#92400E;}
+  .insight{background:#EFF6FF;border-left:4px solid #3B82F6;border-radius:0 6px 6px 0;padding:12px 16px;font-size:13px;color:#1E3A5F;margin-top:16px;}
+  .insight strong{color:#1D4ED8;}
+  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.grid-3{grid-template-columns:1fr 1fr;}.container{padding:20px;}.header{padding:20px;flex-direction:column;gap:12px;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-marca">Grupo Berger · Reunión Comercial</div>
+    <div class="header-titulo">Resumen de Ventas<br><span>Enero — Junio 2026</span></div>
+  </div>
+  <div class="header-meta">
+    <div class="header-periodo">Mismo período · ENE–JUN 2025 vs. 2026</div>
+    <div class="header-badge">Berger S.A.</div>
+  </div>
+</div>
+
+<div class="nav">
+  <a class="nav-item active" href="#resumen">Resumen</a>
+  <a class="nav-item" href="#nuevos-mensual">Nuevos — Mensual</a>
+  <a class="nav-item" href="#nuevos-asesor">Nuevos — Asesores</a>
+  <a class="nav-item" href="#usados-mensual">Usados — Mensual</a>
+  <a class="nav-item" href="#usados-asesor">Usados — Asesores</a>
+  <a class="nav-item" href="#stock">Stock Usados</a>
+  <a class="nav-item" href="#implementos">Por Implemento</a>
+</div>
+
+<div class="container">
+
+  <!-- 1. RESUMEN -->
+  <div class="seccion" id="resumen">
+    <div class="seccion-header">
+      <div class="seccion-numero">1</div>
+      <div class="seccion-titulo">Resumen del Período <span class="seccion-sub">ENE–JUN 2025 vs. ENE–JUN 2026</span></div>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card rojo">
+        <div class="kpi-label">Nuevos 2025 (ene–jun)</div>
+        <div class="kpi-valor">USD 5.23M</div>
+        <div class="kpi-sub">95 operaciones</div>
+      </div>
+      <div class="kpi-card naranja">
+        <div class="kpi-label">Nuevos 2026 (ene–jun)</div>
+        <div class="kpi-valor">USD 4.86M</div>
+        <div class="kpi-sub">95 operaciones</div>
+        <div class="kpi-var warn">−7% vs mismo período 2025</div>
+      </div>
+      <div class="kpi-card naranja">
+        <div class="kpi-label">Avance vs Presupuesto</div>
+        <div class="kpi-valor">69%</div>
+        <div class="kpi-sub">USD 4.86M de USD 7.05M</div>
+        <div class="kpi-var warn">ABR y MAY sobre presupuesto</div>
+      </div>
+      <div class="kpi-card verde">
+        <div class="kpi-label">Mismas operaciones</div>
+        <div class="kpi-valor">95 = 95</div>
+        <div class="kpi-sub">Mismo volumen de ops</div>
+        <div class="kpi-var pos">Caída es de ticket promedio</div>
+      </div>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Concepto</th><th class="num">ENE–JUN 2025</th><th class="num">ENE–JUN 2026</th><th class="num">Variación</th></tr></thead>
+        <tbody>
+          <tr><td>Venta Nuevos</td><td class="num">5.231.028</td><td class="num">4.858.844</td><td class="num neg">−7%</td></tr>
+          <tr><td>Venta Usados</td><td class="num">794.925</td><td class="num">626.062</td><td class="num neg">−21%</td></tr>
+          <tr><td>Compra Usados</td><td class="num">967.121</td><td class="num">550.401</td><td class="num pos">−43% ↓</td></tr>
+          <tr class="total"><td class="label">TOTAL FACTURADO</td><td class="num">6.025.953</td><td class="num">5.484.906</td><td class="num neg">−9%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight"><strong>Lectura clave:</strong> comparando el mismo período, la caída es de −7% en nuevos y −9% en total — muy diferente a lo que parecía antes. Las mismas 95 operaciones, con ticket promedio algo menor. El volumen de actividad se mantuvo.</div>
+  </div>
+
+  <!-- 2. NUEVOS MENSUAL -->
+  <div class="seccion" id="nuevos-mensual">
+    <div class="seccion-header">
+      <div class="seccion-numero">2</div>
+      <div class="seccion-titulo">Evolución Mensual — Nuevos</div>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Mes</th><th class="num">2025 USD</th><th class="num">2026 USD</th><th class="num">Var %</th><th class="num">Presupuesto</th><th class="num">Brecha</th><th>Avance</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>ENE</strong></td><td class="num">1.229.202</td><td class="num">307.758</td><td class="num neg">−75%</td><td class="num">839.500</td><td class="num neg">−531.742</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar danger" style="width:37%"></div></div><span class="avance-pct neg">37%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>FEB</strong></td><td class="num">1.290.873</td><td class="num">418.168</td><td class="num neg">−68%</td><td class="num">1.398.251</td><td class="num neg">−980.083</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar danger" style="width:30%"></div></div><span class="avance-pct neg">30%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>MAR</strong></td><td class="num">779.141</td><td class="num">757.546</td><td class="num neg">−3%</td><td class="num">1.801.751</td><td class="num neg">−1.044.205</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar warn" style="width:42%"></div></div><span class="avance-pct warn">42%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>ABR</strong></td><td class="num">1.222.340</td><td class="num">1.545.867</td><td class="num pos">+26%</td><td class="num">1.034.251</td><td class="num pos">+511.616</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar" style="width:100%"></div></div><span class="avance-pct pos">149%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>MAY</strong></td><td class="num">259.330</td><td class="num">1.237.792</td><td class="num pos">+377%</td><td class="num">832.751</td><td class="num pos">+405.041</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar" style="width:100%"></div></div><span class="avance-pct pos">149%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>JUN</strong></td><td class="num">450.141</td><td class="num">591.714</td><td class="num pos">+31%</td><td class="num">1.147.000</td><td class="num neg">−555.286</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar warn" style="width:52%"></div></div><span class="avance-pct warn">52% *</span></div></td>
+          </tr>
+          <tr class="total">
+            <td class="label">TOTAL</td><td class="num">5.231.027</td><td class="num">4.858.845</td><td class="num neg">−7%</td><td class="num">7.053.504</td><td class="num neg">−2.194.659</td>
+            <td><span class="avance-pct warn">69%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alerta">* Junio en curso — corte al 17/06. <strong>ENE y FEB arrastraron la brecha acumulada</strong>. ABR y MAY revirtieron la tendencia superando el presupuesto.</div>
+  </div>
+
+  <!-- 3. ASESORES NUEVOS -->
+  <div class="seccion" id="nuevos-asesor">
+    <div class="seccion-header">
+      <div class="seccion-numero">3</div>
+      <div class="seccion-titulo">Desempeño por Asesor — Nuevos <span class="seccion-sub">mismo período ENE–JUN</span></div>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Asesor</th><th class="num">U. 2025</th><th class="num">USD 2025</th><th class="num">U. 2026</th><th class="num">USD 2026</th><th class="num">Variación</th></tr></thead>
+        <tbody>
+          <tr><td>Berger Lucas</td><td class="num">16</td><td class="num">1.308.644</td><td class="num">23</td><td class="num">1.529.950</td><td class="num pos">+17%</td></tr>
+          <tr><td>Berger Emiliano</td><td class="num">39</td><td class="num">1.376.879</td><td class="num">23</td><td class="num">1.080.382</td><td class="num neg">−22%</td></tr>
+          <tr><td>García Demian</td><td class="num">7</td><td class="num">254.808</td><td class="num">7</td><td class="num">555.519</td><td class="num pos">+118%</td></tr>
+          <tr><td>Reimer Agustín</td><td class="num">1</td><td class="num">47.575</td><td class="num">5</td><td class="num">469.836</td><td class="num pos">+888%</td></tr>
+          <tr><td>Tomas Vía</td><td class="num">—</td><td class="num">—</td><td class="num">6</td><td class="num">314.255</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr><td>Goedelmann Marcelo</td><td class="num">10</td><td class="num">660.689</td><td class="num">14</td><td class="num">536.706</td><td class="num neg">−19%</td></tr>
+          <tr><td>Sierra Juan</td><td class="num">5</td><td class="num">165.943</td><td class="num">4</td><td class="num">151.692</td><td class="num neg">−9%</td></tr>
+          <tr><td>Choopi Diego</td><td class="num">2</td><td class="num">54.689</td><td class="num">6</td><td class="num">97.923</td><td class="num pos">+79%</td></tr>
+          <tr><td>Cobo José</td><td class="num">7</td><td class="num">1.184.055</td><td class="num">4</td><td class="num">64.087</td><td class="num neg">−95%</td></tr>
+          <tr><td>Enríquez Ramiro</td><td class="num">—</td><td class="num">—</td><td class="num">1</td><td class="num">33.687</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr class="total"><td class="label">TOTAL</td><td class="num">95</td><td class="num">5.231.028</td><td class="num">95</td><td class="num">4.858.844</td><td class="num neg">−7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight"><strong>Cobo José</strong> pasó de USD 1.18M a USD 64K (−95%) — es el mayor impacto individual. <strong>García Demian y Reimer Agustín</strong> son los crecimientos más destacados del período.</div>
+  </div>
+
+  <!-- 4. USADOS MENSUAL -->
+  <div class="seccion" id="usados-mensual">
+    <div class="seccion-header">
+      <div class="seccion-numero">4</div>
+      <div class="seccion-titulo">Evolución Mensual — Usados <span class="seccion-sub">venta y compra</span></div>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Mes</th><th class="num">V.Usados 25</th><th class="num">V.Usados 26</th><th class="num">Var%</th><th class="num">C.Usados 25</th><th class="num">C.Usados 26</th><th class="num">Var%</th><th class="num">Presup.V.</th><th>Av%</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>ENE</strong></td><td class="num">48.710</td><td class="num">102.288</td><td class="num pos">+110%</td><td class="num">437.798</td><td class="num">19.400</td><td class="num pos">−96%↓</td><td class="num">245.197</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar warn" style="width:42%"></div></div><span class="avance-pct warn">42%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>FEB</strong></td><td class="num">85.811</td><td class="num">168.653</td><td class="num pos">+97%</td><td class="num">231.870</td><td class="num">85.460</td><td class="num pos">−63%↓</td><td class="num">245.197</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar warn" style="width:69%"></div></div><span class="avance-pct warn">69%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>MAR</strong></td><td class="num">204.018</td><td class="num">50.841</td><td class="num neg">−75%</td><td class="num">47.174</td><td class="num">53.361</td><td class="num warn">+13%</td><td class="num">245.197</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar danger" style="width:21%"></div></div><span class="avance-pct neg">21%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>ABR</strong></td><td class="num">273.807</td><td class="num">142.546</td><td class="num neg">−48%</td><td class="num">79.149</td><td class="num">142.180</td><td class="num warn">+80%</td><td class="num">245.197</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar warn" style="width:58%"></div></div><span class="avance-pct warn">58%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>MAY</strong></td><td class="num">175.973</td><td class="num">81.271</td><td class="num neg">−54%</td><td class="num">9.131</td><td class="num">250.000</td><td class="num neg">↑ alto</td><td class="num">245.197</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar danger" style="width:33%"></div></div><span class="avance-pct neg">33%</span></div></td>
+          </tr>
+          <tr>
+            <td><strong>JUN</strong></td><td class="num">6.606</td><td class="num">80.463</td><td class="num pos">+31%</td><td class="num">162.000</td><td class="num">0</td><td class="num">—</td><td class="num">245.197</td>
+            <td><div class="avance-wrap"><div class="avance-bar-bg"><div class="avance-bar danger" style="width:33%"></div></div><span class="avance-pct neg">33% *</span></div></td>
+          </tr>
+          <tr class="total">
+            <td class="label">TOTAL</td><td class="num">794.925</td><td class="num">626.062</td><td class="num neg">−21%</td><td class="num">967.122</td><td class="num">550.401</td><td class="num pos">−43%↓</td><td class="num">1.471.182</td>
+            <td><span class="avance-pct warn">43%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="alerta">* Junio en curso. La <strong>compra de usados cayó −43%</strong> — menos stock acumulado y mejor posición de caja que en 2025.</div>
+  </div>
+
+  <!-- 5. ASESORES USADOS -->
+  <div class="seccion" id="usados-asesor">
+    <div class="seccion-header">
+      <div class="seccion-numero">5</div>
+      <div class="seccion-titulo">Desempeño por Asesor — Usados y Compra <span class="seccion-sub">mismo período ENE–JUN</span></div>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Asesor</th><th class="num">V.Usados 25</th><th class="num">V.Usados 26</th><th class="num">Var%</th><th class="num">C.Usados 25</th><th class="num">C.Usados 26</th><th class="num">Var%</th></tr></thead>
+        <tbody>
+          <tr><td>Enríquez Ramiro</td><td class="num">—</td><td class="num">92.082</td><td class="num"><span class="nuevo-badge">NUEVO</span></td><td class="num">—</td><td class="num">2.000</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr><td>Choopi Diego</td><td class="num">30.927</td><td class="num">126.052</td><td class="num pos">+308%</td><td class="num">—</td><td class="num">22.933</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr><td>Sierra Juan</td><td class="num">15.670</td><td class="num">95.867</td><td class="num pos">+512%</td><td class="num">38.203</td><td class="num">7.000</td><td class="num neg">−82%</td></tr>
+          <tr><td>Berger Lucas</td><td class="num">12.013</td><td class="num">36.622</td><td class="num pos">+205%</td><td class="num">87.039</td><td class="num">103.654</td><td class="num neg">+19%</td></tr>
+          <tr><td>Goedelmann Marcelo</td><td class="num">129.227</td><td class="num">61.337</td><td class="num neg">−53%</td><td class="num">104.913</td><td class="num">37.828</td><td class="num pos">−64%↓</td></tr>
+          <tr><td>Berger Emiliano</td><td class="num">195.811</td><td class="num">105.210</td><td class="num neg">−46%</td><td class="num">104.100</td><td class="num">116.986</td><td class="num neg">+12%</td></tr>
+          <tr><td>Cobo José</td><td class="num">126.970</td><td class="num">75.945</td><td class="num neg">−40%</td><td class="num">580.423</td><td class="num">—</td><td class="num pos">−100%↓</td></tr>
+          <tr><td>García Demian</td><td class="num">140.922</td><td class="num">11.636</td><td class="num neg">−92%</td><td class="num">20.765</td><td class="num">200.000</td><td class="num neg">+863%</td></tr>
+          <tr><td>Reimer Agustín</td><td class="num">87.385</td><td class="num">10.781</td><td class="num neg">−88%</td><td class="num">15.679</td><td class="num">—</td><td class="num pos">−100%↓</td></tr>
+          <tr><td>Tomas Vía</td><td class="num">—</td><td class="num">10.530</td><td class="num"><span class="nuevo-badge">NUEVO</span></td><td class="num">—</td><td class="num">60.000</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr class="total"><td class="label">TOTAL</td><td class="num">794.925</td><td class="num">626.062</td><td class="num neg">−21%</td><td class="num">967.121</td><td class="num">550.401</td><td class="num pos">−43%↓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6. STOCK -->
+  <div class="seccion" id="stock">
+    <div class="seccion-header">
+      <div class="seccion-numero">6</div>
+      <div class="seccion-titulo">Stock Usados — Familias Foco</div>
+    </div>
+    <div class="grid-3" style="margin-bottom:16px;">
+      <div class="stock-card">
+        <div class="stock-familia">Sembradora Fina</div>
+        <div class="stock-u">12 <span style="font-size:16px;color:var(--texto-suave)">u</span></div>
+        <div class="stock-u-label">unidades en stock</div>
+        <div class="stock-valor">USD 755.478 lista</div>
+      </div>
+      <div class="stock-card">
+        <div class="stock-familia">Sembradora Gruesa</div>
+        <div class="stock-u">8 <span style="font-size:16px;color:var(--texto-suave)">u</span></div>
+        <div class="stock-u-label">unidades en stock</div>
+        <div class="stock-valor">USD 555.750 lista</div>
+      </div>
+      <div class="stock-card">
+        <div class="stock-familia">Maicero</div>
+        <div class="stock-u">4 <span style="font-size:16px;color:var(--texto-suave)">u</span></div>
+        <div class="stock-u-label">unidades en stock</div>
+        <div class="stock-valor">USD 178.000 lista</div>
+      </div>
+      <div class="stock-card">
+        <div class="stock-familia">Mixer</div>
+        <div class="stock-u">13 <span style="font-size:16px;color:var(--texto-suave)">u</span></div>
+        <div class="stock-u-label">unidades en stock</div>
+        <div class="stock-valor">USD 168.567 lista</div>
+      </div>
+      <div class="stock-card" style="border-left:4px solid var(--rojo);">
+        <div class="stock-familia" style="color:var(--rojo);">TOTAL FOCO</div>
+        <div class="stock-u" style="color:var(--azul);">37 <span style="font-size:16px;color:var(--texto-suave)">u</span></div>
+        <div class="stock-u-label">con mayor capital inmovilizado</div>
+        <div class="stock-valor" style="color:var(--rojo);font-weight:700;">USD 1.657.795 lista</div>
+      </div>
+    </div>
+    <div class="alerta">Estas 4 familias concentran <strong>USD 1.66M en capital inmovilizado</strong>. Mayor potencial de rotación en el segundo semestre.</div>
+  </div>
+
+  <!-- 7. IMPLEMENTOS -->
+  <div class="seccion" id="implementos">
+    <div class="seccion-header">
+      <div class="seccion-numero">7</div>
+      <div class="seccion-titulo">Facturación por Implemento — Nuevos <span class="seccion-sub">ENE–JUN mismo período</span></div>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead><tr><th>Implemento</th><th class="num">U. 2025</th><th class="num">USD 2025</th><th class="num">U. 2026</th><th class="num">USD 2026</th><th class="num">Brecha USD</th><th class="num">Var %</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Sembradora Gruesa</strong></td><td class="num">4</td><td class="num">1.352.387</td><td class="num">1</td><td class="num">315.837</td><td class="num neg">−1.036.550</td><td class="num neg">−77%</td></tr>
+          <tr><td>Autoelevador</td><td class="num">14</td><td class="num">246.765</td><td class="num">1</td><td class="num">15.794</td><td class="num neg">−230.971</td><td class="num neg">−94%</td></tr>
+          <tr><td>Draper</td><td class="num">4</td><td class="num">566.476</td><td class="num">2</td><td class="num">290.796</td><td class="num neg">−275.680</td><td class="num neg">−49%</td></tr>
+          <tr><td>Autodescargable</td><td class="num">12</td><td class="num">666.318</td><td class="num">9</td><td class="num">498.999</td><td class="num neg">−167.319</td><td class="num neg">−25%</td></tr>
+          <tr><td>Mixer</td><td class="num">3</td><td class="num">185.649</td><td class="num">1</td><td class="num">37.590</td><td class="num neg">−148.059</td><td class="num neg">−80%</td></tr>
+          <tr><td>Maicero</td><td class="num">9</td><td class="num">755.102</td><td class="num">8</td><td class="num">630.144</td><td class="num neg">−124.958</td><td class="num neg">−17%</td></tr>
+          <tr><td>Extractora</td><td class="num">6</td><td class="num">143.000</td><td class="num">3</td><td class="num">68.547</td><td class="num neg">−74.453</td><td class="num neg">−52%</td></tr>
+          <tr><td>Embolsadora</td><td class="num">8</td><td class="num">170.643</td><td class="num">3</td><td class="num">82.926</td><td class="num neg">−87.717</td><td class="num neg">−51%</td></tr>
+          <tr><td>Sembradora Fina</td><td class="num">1</td><td class="num">321.512</td><td class="num">1</td><td class="num">310.357</td><td class="num neg">−11.155</td><td class="num neg">−3%</td></tr>
+          <tr><td>Girasolero</td><td class="num">7</td><td class="num">288.932</td><td class="num">7</td><td class="num">283.515</td><td class="num neg">−5.417</td><td class="num neg">−2%</td></tr>
+          <tr><td>Rolo/Rastra</td><td class="num">4</td><td class="num">149.068</td><td class="num">10</td><td class="num">365.204</td><td class="num pos">+216.136</td><td class="num pos">+145%</td></tr>
+          <tr><td>Cargadora</td><td class="num">4</td><td class="num">149.323</td><td class="num">8</td><td class="num">488.184</td><td class="num pos">+338.861</td><td class="num pos">+227%</td></tr>
+          <tr><td>Batea</td><td class="num">—</td><td class="num">—</td><td class="num">4</td><td class="num">73.314</td><td class="num pos">+73.314</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr><td>Oruga</td><td class="num">—</td><td class="num">—</td><td class="num">3</td><td class="num">381.006</td><td class="num pos">+381.006</td><td class="num"><span class="nuevo-badge">NUEVO</span></td></tr>
+          <tr><td>Otros</td><td class="num">19</td><td class="num">235.850</td><td class="num">34</td><td class="num">1.016.631</td><td class="num pos">+780.780</td><td class="num pos">+331%</td></tr>
+          <tr class="total"><td class="label">TOTAL</td><td class="num">95</td><td class="num">5.231.025</td><td class="num">95</td><td class="num">4.858.844</td><td class="num neg">−372.181</td><td class="num neg">−7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight"><strong>La Sembradora Gruesa explica el 70% de la caída</strong> (−USD 1.04M). Sin ella, el portfolio creció +USD 664K. Cargadora, Oruga y Rolo/Rastra compensaron en parte.</div>
+  </div>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.seccion');
+  const navItems = document.querySelectorAll('.nav-item');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navItems.forEach(n => { n.classList.toggle('active', n.getAttribute('href') === '#' + current); });
+  });
+</script>
+</body>
+</html>
